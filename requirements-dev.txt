@@ -1,0 +1,4 @@
+-r requirements.txt
+scipy
+Faker>=30
+pytest>=8
