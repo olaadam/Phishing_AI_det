@@ -10,7 +10,7 @@ Faker. Generator jest deterministyczny dla danego ``seed`` i wersji Fakera.
 
 Użycie jako skrypt (eksport CSV, np. do ręcznego sprawdzenia lub demo):
 
-    python tests/synthetic_urls.py -n 2000 --format phiusiil -o synthetic.csv
+    python tests/synthetic_urls.py -n 2000 --format raw -o synthetic.csv
 """
 
 from __future__ import annotations
@@ -245,15 +245,20 @@ def generate_dataset(n: int = 2000, seed: int = 42, phishing_ratio: float = 0.5)
 
 
 def to_phiusiil_format(df: pd.DataFrame) -> pd.DataFrame:
-    """Format pliku PhiUSIIL_Phishing_URL_Dataset.csv czytanego przez main.py.
+    """Format surowego zbioru PhiUSIIL (data/raw/phishing_urls.csv) czytanego przez load_prepare_data.py.
 
-    W PhiUSIIL label = 1 oznacza URL legalny, label = 0 phishing.
+    Zawiera tylko kolumny URL i label (prawdziwy plik ma ich ponad 50, ale
+    load_prepare_data.py używa tylko tych dwóch). W PhiUSIIL label = 1 oznacza
+    URL legalny, label = 0 phishing.
     """
     return pd.DataFrame({"URL": df["url"], "label": 1 - df["is_phishing"]})
 
 
 def to_phishing_site_urls_format(df: pd.DataFrame) -> pd.DataFrame:
-    """Format Kaggle taruntiwarihp/phishing-site-urls czytany przez load_prepare_data.py (URL, Label: good/bad)."""
+    """Format w stylu Kaggle taruntiwarihp/phishing-site-urls (URL, Label: good/bad).
+
+    load_prepare_data.py też go obsługuje (rozpoznaje etykiety tekstowe good/bad).
+    """
     return pd.DataFrame({"URL": df["url"], "Label": df["is_phishing"].map({0: "good", 1: "bad"})})
 
 
