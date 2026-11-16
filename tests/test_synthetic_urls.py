@@ -89,7 +89,7 @@ def test_legit_bank_urls_use_real_domains(synthetic_df):
         assert urlsplit(url).hostname in real_hosts, url
 
 
-def test_phiusiil_format_matches_main_py_input(synthetic_df):
+def test_phiusiil_format_matches_raw_dataset(synthetic_df):
     out = to_phiusiil_format(synthetic_df)
     assert list(out.columns) == ["URL", "label"]
     # PhiUSIIL: 1 = legalny, 0 = phishing
